@@ -5,25 +5,34 @@
   <h1>{{ 'Новый дом' if not item else 'Редактирование дома' }}</h1>
   <a href="/admin/houses">← К списку</a>
 </div>
-<form method="post" class="stack card">
+<form method="post" class="stack card" enctype="multipart/form-data">
   <label>Адрес / название<input name="name" required value="{{ item.name if item else '' }}" placeholder="ул. Анохина д. 3"></label>
   <label>Порядок сортировки<input name="sort_order" type="number" value="{{ item.sort_order if item else 0 }}"></label>
   <label class="check"><input type="checkbox" name="published" value="1" {% if not item or item.published %}checked{% endif %}> Показывать на сайте</label>
 
   <h2>Документы</h2>
-  <p class="muted">Каждая строка — название и ссылка на файл (PDF/DOC).</p>
+  <p class="muted">Можно загрузить файл (PDF, DOC, XLS, ZIP, изображения до 40 МБ) или вставить внешнюю ссылку. Если выбран и файл, и ссылка — приоритет у загруженного файла.</p>
   <div id="docs" class="docs-edit">
     {% set docs = item.docs if item else [] %}
     {% for d in docs %}
     <div class="doc-row">
       <input name="doc_title" value="{{ d.title }}" placeholder="Название документа">
-      <input name="doc_url" value="{{ d.url }}" placeholder="https://.../file.pdf">
+      <div class="doc-file">
+        <input name="doc_url" value="{{ d.url }}" placeholder="Ссылка (если без загрузки)">
+        {% if d.url %}
+        <a class="file-link" href="{{ d.url }}" target="_blank" rel="noopener">Открыть текущий</a>
+        {% endif %}
+        <label class="file-pick">Загрузить файл<input type="file" name="doc_file" accept=".pdf,.doc,.docx,.xls,.xlsx,.zip,.rtf,.jpg,.jpeg,.png,.webp"></label>
+      </div>
     </div>
     {% endfor %}
     {% for _ in range(3) %}
     <div class="doc-row">
       <input name="doc_title" placeholder="Название документа">
-      <input name="doc_url" placeholder="https://.../file.pdf">
+      <div class="doc-file">
+        <input name="doc_url" placeholder="Ссылка (необязательно)">
+        <label class="file-pick">Загрузить файл<input type="file" name="doc_file" accept=".pdf,.doc,.docx,.xls,.xlsx,.zip,.rtf,.jpg,.jpeg,.png,.webp"></label>
+      </div>
     </div>
     {% endfor %}
   </div>
@@ -41,7 +50,12 @@ function addDoc(){
   const wrap=document.getElementById('docs');
   const row=document.createElement('div');
   row.className='doc-row';
-  row.innerHTML='<input name="doc_title" placeholder="Название документа"><input name="doc_url" placeholder="https://.../file.pdf">';
+  row.innerHTML=`
+    <input name="doc_title" placeholder="Название документа">
+    <div class="doc-file">
+      <input name="doc_url" placeholder="Ссылка (необязательно)">
+      <label class="file-pick">Загрузить файл<input type="file" name="doc_file" accept=".pdf,.doc,.docx,.xls,.xlsx,.zip,.rtf,.jpg,.jpeg,.png,.webp"></label>
+    </div>`;
   wrap.appendChild(row);
 }
 </script>

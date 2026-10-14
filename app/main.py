@@ -29,17 +29,21 @@ from app.db import (
 )
 from app.publish import publish
 from app.seed import seed
+from app.uploads import ensure_upload_dir, is_upload_file, save_upload
 
 APP_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(APP_DIR / "templates"))
 
 app = FastAPI(title="УК ЖилВек CMS")
 app.mount("/admin/static", StaticFiles(directory=str(APP_DIR / "static")), name="admin-static")
+ensure_upload_dir()
+app.mount("/uploads", StaticFiles(directory=str(ROOT / "uploads")), name="uploads")
 
 
 @app.on_event("startup")
 def on_startup() -> None:
     init_db()
+    ensure_upload_dir()
     seed(force=False)
     if not (ROOT / "docs" / "index.html").exists():
         publish()
@@ -271,12 +275,28 @@ def house_edit(request: Request, house_id: int):
     return render(request, "admin/house_edit.html", {"user": user, "section": "houses", "item": item, "flash": ""})
 
 
-def _docs_from_form(doc_title: list[str], doc_url: list[str]) -> list[dict]:
+async def _docs_from_form(form) -> list[dict]:
+    titles = [str(x or "") for x in form.getlist("doc_title")]
+    urls = [str(x or "") for x in form.getlist("doc_url")]
+    files = list(form.getlist("doc_file"))
+    # pad files list to titles length
+    while len(files) < len(titles):
+        files.append(None)
     docs = []
-    for title, url in zip(doc_title, doc_url):
-        title, url = title.strip(), url.strip()
-        if title and url:
-            docs.append({"title": title, "url": url})
+    for title, url, uploaded in zip(titles, urls, files):
+        title = title.strip()
+        url = url.strip()
+        file_url = ""
+        if is_upload_file(uploaded) and getattr(uploaded, "filename", None):
+            try:
+                file_url = save_upload(uploaded)
+            except ValueError as exc:
+                raise HTTPException(status_code=400, detail=str(exc)) from exc
+        final_url = file_url or url
+        if not title and final_url:
+            title = Path(final_url).name
+        if title and final_url:
+            docs.append({"title": title, "url": final_url})
     return docs
 
 
@@ -285,7 +305,10 @@ async def house_create(request: Request):
     if not current_user(request):
         return RedirectResponse("/admin/login", status_code=303)
     form = await request.form()
-    docs = _docs_from_form(form.getlist("doc_title"), form.getlist("doc_url"))
+    try:
+        docs = await _docs_from_form(form)
+    except HTTPException as exc:
+        return flash_redirect("/admin/houses/new", str(exc.detail))
     with db() as conn:
         hid = save_house(
             conn,
@@ -304,7 +327,10 @@ async def house_update(request: Request, house_id: int):
     if not current_user(request):
         return RedirectResponse("/admin/login", status_code=303)
     form = await request.form()
-    docs = _docs_from_form(form.getlist("doc_title"), form.getlist("doc_url"))
+    try:
+        docs = await _docs_from_form(form)
+    except HTTPException as exc:
+        return flash_redirect(f"/admin/houses/{house_id}", str(exc.detail))
     with db() as conn:
         if not get_house(conn, house_id):
             raise HTTPException(404)

@@ -7,7 +7,8 @@ from datetime import datetime
 from html import escape
 from pathlib import Path
 
-from app.db import ROOT, db, dump_json, get_page, list_articles, list_houses, list_pages
+from app.db import ROOT, db, dump_json, list_articles, list_houses, list_pages
+from app.uploads import sync_uploads_to_docs
 
 WEB = ROOT / "docs"
 THEME = ROOT / "theme"
@@ -216,12 +217,19 @@ def build_home(articles: list[dict]) -> str:
     )
 
 
+def public_doc_url(url: str, prefix: str = "../") -> str:
+    """Rewrite /uploads/... for static pages (GitHub Pages project path safe)."""
+    if url.startswith("/uploads/"):
+        return prefix + url.lstrip("/")
+    return url
+
+
 def build_houses(houses: list[dict]) -> str:
     blocks = ['<input class="search" id="houseSearch" type="search" placeholder="Найти дом — улица или номер">']
     for h in houses:
         docs = "".join(
-            f'<a href="{escape(d["url"])}" target="_blank" rel="noopener">{escape(d["title"])}'
-            f'<span class="muted">PDF / DOC</span></a>'
+            f'<a href="{escape(public_doc_url(d["url"]))}" target="_blank" rel="noopener">{escape(d["title"])}'
+            f'<span class="muted">файл</span></a>'
             for d in h.get("docs") or []
         )
         blocks.append(
@@ -255,6 +263,7 @@ def publish() -> Path:
         if src.exists():
             shutil.copy2(src, assets / name)
     (WEB / ".nojekyll").write_text("", encoding="utf-8")
+    sync_uploads_to_docs(WEB)
 
     with db() as conn:
         pages = {p["slug"]: p for p in list_pages(conn, published_only=True)}

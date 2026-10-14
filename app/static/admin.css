@@ -80,7 +80,28 @@ input, textarea {
 .flash, .ok {
   background: #e8efe9; border: 1px solid #c9dbcf; padding: 10px 12px; border-radius: 10px; margin-bottom: 14px;
 }
-.doc-row { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; margin-bottom: 8px; }
+.doc-row {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--line);
+}
+.doc-file { display: grid; gap: 6px; }
+.file-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.file-pick input[type=file] {
+  padding: 8px;
+  background: #f7f3ec;
+}
+.file-link { font-size: 13px; font-weight: 600; }
 @media (max-width: 800px) {
   body { flex-direction: column; }
   .side { width: 100%; }
