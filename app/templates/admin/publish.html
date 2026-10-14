@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+{% block title %}Публикация{% endblock %}
+{% block content %}
+<h1>Публикация сайта</h1>
+<div class="card stack">
+  <p>Кнопка ниже пересоберёт статические страницы в папке <code>docs/</code> из данных админки. После этого можно выложить сайт на GitHub Pages.</p>
+  <form method="post" action="/admin/publish">
+    <button class="btn" type="submit">Опубликовать сейчас</button>
+  </form>
+  {% if last_result %}
+  <p class="ok">{{ last_result }}</p>
+  {% endif %}
+</div>
+{% endblock %}

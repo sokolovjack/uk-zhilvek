@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Новая статья' if not item else 'Статья' }}{% endblock %}
+{% block content %}
+<div class="head-row">
+  <h1>{{ 'Новая статья' if not item else 'Редактирование статьи' }}</h1>
+  <a href="/admin/articles">← К списку</a>
+</div>
+<form method="post" class="stack card">
+  <label>Заголовок<input name="title" required value="{{ item.title if item else '' }}"></label>
+  <label>Slug (URL)<input name="slug" required value="{{ item.slug if item else '' }}" placeholder="2026/03/20/novaya-novost"></label>
+  <label>Дата публикации<input name="published_at" type="date" required value="{{ item.published_at if item else today }}"></label>
+  <label>Краткое описание<textarea name="excerpt" rows="2">{{ item.excerpt if item else '' }}</textarea></label>
+  <label>Текст (HTML)<textarea name="body_html" rows="16">{{ item.body_html if item else '' }}</textarea></label>
+  <label class="check"><input type="checkbox" name="published" value="1" {% if not item or item.published %}checked{% endif %}> Опубликована</label>
+  <div class="row">
+    <button class="btn" type="submit">Сохранить</button>
+    {% if item %}
+    <button class="btn danger" formaction="/admin/articles/{{ item.id }}/delete" formmethod="post" onclick="return confirm('Удалить статью?')">Удалить</button>
+    {% endif %}
+  </div>
+</form>
+{% endblock %}

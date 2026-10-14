@@ -1,0 +1,19 @@
+{% extends "admin/base.html" %}
+{% block title %}Обзор{% endblock %}
+{% block content %}
+<h1>Обзор</h1>
+<div class="stats">
+  <div class="stat"><b>{{ counts.articles }}</b><span>статей</span></div>
+  <div class="stat"><b>{{ counts.houses }}</b><span>домов</span></div>
+  <div class="stat"><b>{{ counts.pages }}</b><span>страниц</span></div>
+</div>
+<div class="card">
+  <h2>Что можно делать</h2>
+  <ul>
+    <li><a href="/admin/articles">Статьи</a> — создавать, править и скрывать новости</li>
+    <li><a href="/admin/houses">Дома</a> — добавлять адреса и документы (ссылки на PDF)</li>
+    <li><a href="/admin/pages">Страницы</a> — править тексты разделов сайта</li>
+    <li><a href="/admin/publish">Публикация</a> — обновить статический сайт в папке docs/</li>
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Админка{% endblock %} — УК ЖилВек</title>
+  <link rel="stylesheet" href="/admin/static/admin.css">
+</head>
+<body>
+{% if user %}
+<aside class="side">
+  <div class="brand">УК «ЖилВек»<small>админка</small></div>
+  <nav>
+    <a href="/admin/" class="{{ 'on' if section=='dash' else '' }}">Обзор</a>
+    <a href="/admin/articles" class="{{ 'on' if section=='articles' else '' }}">Статьи</a>
+    <a href="/admin/houses" class="{{ 'on' if section=='houses' else '' }}">Дома</a>
+    <a href="/admin/pages" class="{{ 'on' if section=='pages' else '' }}">Страницы</a>
+    <a href="/admin/publish" class="{{ 'on' if section=='publish' else '' }}">Публикация</a>
+    <a href="/" target="_blank">Открыть сайт</a>
+  </nav>
+  <form method="post" action="/admin/logout" class="logout">
+    <button type="submit">Выйти</button>
+  </form>
+</aside>
+{% endif %}
+<main class="main {% if not user %}login-wrap{% endif %}">
+  {% if flash %}<div class="flash">{{ flash }}</div>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

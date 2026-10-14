@@ -4,3 +4,5 @@ __pycache__/
 .venv/
 .env
 .env.*
+data/cms.db
+data/cms.db-*

@@ -1,0 +1,20 @@
+{% extends "admin/base.html" %}
+{% block title %}Страница{% endblock %}
+{% block content %}
+<div class="head-row">
+  <h1>Редактирование страницы</h1>
+  <a href="/admin/pages">← К списку</a>
+</div>
+<form method="post" class="stack card">
+  <label>Заголовок H1<input name="heading" required value="{{ item.heading }}"></label>
+  <label>Title (SEO)<input name="title" required value="{{ item.title }}"></label>
+  <label>Slug<input name="slug" required value="{{ item.slug }}"></label>
+  <label>Description<input name="description" value="{{ item.description }}"></label>
+  <label>Порядок<input name="sort_order" type="number" value="{{ item.sort_order }}"></label>
+  <label>Содержимое (HTML)<textarea name="body_html" rows="18">{{ item.body_html }}</textarea></label>
+  <label class="check"><input type="checkbox" name="published" value="1" {% if item.published %}checked{% endif %}> Опубликована</label>
+  <div class="row">
+    <button class="btn" type="submit">Сохранить</button>
+  </div>
+</form>
+{% endblock %}

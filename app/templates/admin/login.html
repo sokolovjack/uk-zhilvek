@@ -1,0 +1,13 @@
+{% extends "admin/base.html" %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+<div class="login-card">
+  <h1>Вход в админку</h1>
+  <p class="muted">Редактирование статей, домов и страниц сайта УК «ЖилВек»</p>
+  <form method="post" action="/admin/login" class="stack">
+    <label>Логин<input name="username" required autocomplete="username" value="admin"></label>
+    <label>Пароль<input name="password" type="password" required autocomplete="current-password"></label>
+    <button class="btn" type="submit">Войти</button>
+  </form>
+</div>
+{% endblock %}

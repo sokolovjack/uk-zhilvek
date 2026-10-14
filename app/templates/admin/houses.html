@@ -1,0 +1,23 @@
+{% extends "admin/base.html" %}
+{% block title %}Дома{% endblock %}
+{% block content %}
+<div class="head-row">
+  <h1>Дома</h1>
+  <a class="btn" href="/admin/houses/new">+ Новый дом</a>
+</div>
+<table class="table">
+  <thead><tr><th>Адрес</th><th>Документов</th><th>Статус</th><th></th></tr></thead>
+  <tbody>
+  {% for h in houses %}
+    <tr>
+      <td><a href="/admin/houses/{{ h.id }}">{{ h.name }}</a></td>
+      <td>{{ h.docs|length }}</td>
+      <td>{% if h.published %}на сайте{% else %}скрыт{% endif %}</td>
+      <td class="right"><a href="/admin/houses/{{ h.id }}">Править</a></td>
+    </tr>
+  {% else %}
+    <tr><td colspan="4">Домов пока нет</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "admin/base.html" %}
+{% block title %}Страницы{% endblock %}
+{% block content %}
+<div class="head-row">
+  <h1>Страницы</h1>
+</div>
+<table class="table">
+  <thead><tr><th>Раздел</th><th>Slug</th><th>Статус</th><th></th></tr></thead>
+  <tbody>
+  {% for p in pages %}
+    <tr>
+      <td><a href="/admin/pages/{{ p.id }}">{{ p.heading }}</a></td>
+      <td><code>{{ p.slug }}</code></td>
+      <td>{% if p.published %}на сайте{% else %}скрыта{% endif %}</td>
+      <td class="right"><a href="/admin/pages/{{ p.id }}">Править</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class="muted">Страница «Ваш дом» показывает список домов из раздела «Дома»; текст на ней — вводный абзац.</p>
+{% endblock %}
