@@ -8,3 +8,6 @@ data/cms.db
 data/cms.db-*
 uploads/*
 !uploads/.gitkeep
+файлы/**
+!файлы/manifest.json
+!файлы/README.md
