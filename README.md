@@ -4,5 +4,5 @@
 
 ```bash
 python3 scripts/build.py
-python3 -m http.server 4173 --directory web
+python3 -m http.server 4173 --directory docs
 ```

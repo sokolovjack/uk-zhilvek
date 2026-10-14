@@ -8,11 +8,12 @@ import urllib.parse
 from datetime import datetime
 from html import escape
 from pathlib import Path
+import shutil
 
 from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parents[1]
-WEB = ROOT / "web"
+WEB = ROOT / "docs"
 DATA = json.loads((ROOT / "scraped/site.json").read_text(encoding="utf-8"))
 TITLES = json.loads((ROOT / "scraped/news-titles.json").read_text(encoding="utf-8"))
 ORIGIN = "https://xn----dtbjckjff1e.xn--p1ai"
@@ -421,6 +422,13 @@ def simple_page(path: str, heading: str, inner: str, desc: str, crumb: str = "")
 
 def build() -> None:
     WEB.mkdir(parents=True, exist_ok=True)
+    assets = WEB / "assets"
+    assets.mkdir(parents=True, exist_ok=True)
+    for name in ("style.css", "app.js"):
+        src = ROOT / "theme" / name
+        if src.exists():
+            shutil.copy2(src, assets / name)
+    (WEB / ".nojekyll").write_text("", encoding="utf-8")
     write("/", home())
 
     # about
