@@ -234,7 +234,7 @@ def build_houses(houses: list[dict]) -> str:
         )
         blocks.append(
             f'<details class="house" data-name="{escape(h["name"])}">'
-            f'<summary>{escape(h["name"])} <span class="muted">{len(h.get("docs") or [])} док.</span></summary>'
+            f'<summary>{escape(h["name"])}</summary>'
             f'<div class="docs">{docs}</div></details>'
         )
     return (
