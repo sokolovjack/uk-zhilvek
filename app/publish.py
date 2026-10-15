@@ -23,16 +23,13 @@ NAV = [
     ("/kontakty/", "Контакты"),
 ]
 
-LOGO = """<svg viewBox="0 0 42 42" fill="none" aria-hidden="true">
-  <rect width="42" height="42" rx="12" fill="#1c4638"/>
-  <path d="M8 24 L21 12 L34 24 V33 H8 Z" fill="#f4efe6"/>
-  <rect x="18" y="24" width="6" height="9" fill="#c45e2b"/>
-</svg>"""
-
-
 def depth_of(path: str) -> str:
     parts = [p for p in path.strip("/").split("/") if p]
     return "../" * len(parts)
+
+
+def logo_html(prefix: str) -> str:
+    return f'<img src="{prefix}assets/logo.png" width="48" height="48" alt="УК ЖилВек">'
 
 
 def page_file(path: str) -> Path:
@@ -88,7 +85,7 @@ def chrome(title: str, desc: str, path: str, body: str) -> str:
 <header class="site-head">
   <div class="wrap">
     <a class="logo" href="{prefix}index.html">
-      {LOGO}
+      {logo_html(prefix)}
       <span><b>УК «ЖилВек»</b><small>управляем домами Жуковского</small></span>
     </a>
     <button class="burger" type="button" aria-label="Меню">Меню</button>
@@ -262,6 +259,11 @@ def publish() -> Path:
         src = THEME / name
         if src.exists():
             shutil.copy2(src, assets / name)
+    logo_src = THEME / "assets" / "logo.png"
+    if not logo_src.exists():
+        logo_src = ROOT / "logo-100.png"
+    if logo_src.exists():
+        shutil.copy2(logo_src, assets / "logo.png")
     (WEB / ".nojekyll").write_text("", encoding="utf-8")
     sync_uploads_to_docs(WEB)
 

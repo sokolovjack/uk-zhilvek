@@ -1,13 +1,13 @@
 :root {
-  --bg: #f3eee6;
-  --ink: #15241c;
-  --muted: #5b6a61;
-  --card: #fffdf8;
-  --line: #ddd4c6;
-  --spruce: #1c4638;
-  --copper: #c45e2b;
+  --bg: #f3f6fb;
+  --ink: #1a2438;
+  --muted: #5a6a80;
+  --card: #ffffff;
+  --line: #d5deec;
+  --spruce: #253b80;
+  --copper: #009761;
   --danger: #a33b2b;
-  --side: #16352b;
+  --side: #1e2f66;
 }
 * { box-sizing: border-box; }
 body {
