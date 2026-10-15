@@ -86,7 +86,7 @@ def chrome(title: str, desc: str, path: str, body: str) -> str:
   <div class="wrap">
     <a class="logo" href="{prefix}index.html">
       {logo_html(prefix)}
-      <span><b>УК «ЖилВек»</b><small>управляем домами Жуковского</small></span>
+      <span><b>УК «ЖилВек»</b><small>управляем домами</small></span>
     </a>
     <button class="burger" type="button" aria-label="Меню">Меню</button>
     <nav class="main">{"".join(nav_html)}</nav>
@@ -149,9 +149,9 @@ def build_home(articles: list[dict]) -> str:
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <p class="kicker">Жуковский · 23 дома</p>
+      <p class="kicker">Жуковский · 30 домов</p>
       <h1>Дом в порядке — каждый день, а не только в отчёте</h1>
-      <p class="lead">ООО «УК «ЖилВек» обслуживает многоквартирные дома в Жуковском: содержание, ремонт, документы и ответы жителям без очереди в тёмном кабинете.</p>
+      <p class="lead">ООО «УК «ЖилВек» обслуживает многоквартирные дома в Жуковском: содержание, ремонт, документы и ответы жителям.</p>
       <div class="actions">
         <a class="btn btn-p" href="priem-pokazanij-individualnyh-priborov-uchyota-vody/">Передать показания</a>
         <a class="btn btn-s" href="oplata-uslug-zhilishchno-kommunalnogo-hozyajstva/">Оплатить счёт</a>
@@ -161,16 +161,16 @@ def build_home(articles: list[dict]) -> str:
     <div class="meter-card">
       <p class="kicker">ИПУ воды</p>
       <div class="num">15–25</div>
-      <p>числа каждого месяца принимаем показания счётчиков воды. Можно через ЕРСИУ, почту или офис.</p>
+      <p>числа каждого месяца принимаем показания счётчиков воды. Передайте через личный кабинет МосОблЕИРЦ, на почту или лично в офисе УК.</p>
       <p class="muted">Аварийная служба ЖКХ 24/7: <a href="tel:+78005503115">8 800 550-31-15</a></p>
     </div>
   </div>
 </section>
 <div class="wrap stats">
-  <div class="card stat"><b>23</b><span>дома под управлением</span></div>
-  <div class="card stat"><b>143 182</b><span>м² жилого фонда</span></div>
-  <div class="card stat"><b>20</b><span>сотрудников в компании</span></div>
-  <div class="card stat"><b>с 2018</b><span>года работаем в городе</span></div>
+  <div class="card stat"><b>30</b><span>домов под управлением</span></div>
+  <div class="card stat"><b>226 412</b><span>м² жилого фонда</span></div>
+  <div class="card stat"><b>40</b><span>сотрудников в компании</span></div>
+  <div class="card stat"><b>8 · 6 · 26</b><span>админ / инженеры / рабочие</span></div>
 </div>
 <section class="section">
   <div class="wrap">
