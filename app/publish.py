@@ -18,7 +18,7 @@ NAV = [
     ("/o-kompanii/", "О компании"),
     ("/uslugi/", "Услуги"),
     ("/vash-dom/", "Ваш дом"),
-    ("/raskrytie-informacii/", "Раскрытие"),
+    ("/raskrytie-informacii/", "Раскрытие информации"),
     ("/novosti/", "Новости"),
     ("/kontakty/", "Контакты"),
 ]
@@ -68,7 +68,7 @@ def chrome(title: str, desc: str, path: str, body: str) -> str:
 <meta name="description" content="{escape(desc)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;650;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;650;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{prefix}assets/style.css">
 </head>
 <body>
@@ -81,10 +81,12 @@ def chrome(title: str, desc: str, path: str, body: str) -> str:
       </a>
       <div class="head-contacts">
         <div class="hc-item">
-          <a href="tel:+74998423920">8 (499) 842-39-20</a>
+          <span class="hc-label">Телефон / почта</span>
+          <a class="hc-phone" href="tel:+74998423920">8 (499) 842-39-20</a>
           <a href="mailto:uk-zhilvek@mail.ru">uk-zhilvek@mail.ru</a>
         </div>
         <div class="hc-item">
+          <span class="hc-label">Адрес</span>
           <span>Московская обл., г. Жуковский</span>
           <span>ул. Строительная д. 14 корп. 2</span>
         </div>
@@ -148,7 +150,7 @@ def build_home(articles: list[dict]) -> str:
     for a in articles[:6]:
         href = a["slug"].strip("/") + "/"
         news.append(
-            f'<a class="card news-item" href="{href}"><time>{escape(fmt_date(a["published_at"]))}</time>'
+            f'<a class="news-item" href="{href}"><time>{escape(fmt_date(a["published_at"]))}</time>'
             f'<div><strong>{escape(a["title"])}</strong><p class="muted">{escape(a.get("excerpt") or "")}</p></div></a>'
         )
     body = f"""
@@ -156,10 +158,10 @@ def build_home(articles: list[dict]) -> str:
   <div class="wrap hero-grid">
     <div>
       <p class="kicker">Жуковский · 30 домов</p>
-      <h1>Дом в порядке — каждый день, а не только в отчёте</h1>
+      <h1>Приём показаний индивидуальных приборов учёта воды</h1>
       <p class="lead">ООО «УК «ЖилВек» обслуживает многоквартирные дома в Жуковском: содержание, ремонт, документы и ответы жителям.</p>
       <div class="actions">
-        <a class="btn btn-p" href="priem-pokazanij-individualnyh-priborov-uchyota-vody/">Передать показания</a>
+        <a class="btn btn-s" href="priem-pokazanij-individualnyh-priborov-uchyota-vody/">Передать показания</a>
         <a class="btn btn-s" href="oplata-uslug-zhilishchno-kommunalnogo-hozyajstva/">Оплатить счёт</a>
         <a class="btn btn-g" href="kontakty/">Написать в УК</a>
       </div>
@@ -173,22 +175,22 @@ def build_home(articles: list[dict]) -> str:
   </div>
 </section>
 <div class="wrap stats">
-  <div class="card stat"><b>30</b><span>домов под управлением</span></div>
-  <div class="card stat"><b>226 412</b><span>м² жилого фонда</span></div>
-  <div class="card stat"><b>40</b><span>сотрудников в компании</span></div>
-  <div class="card stat"><b>8 · 6 · 26</b><span>админ / инженеры / рабочие</span></div>
+  <div class="stat"><b>30</b><span>домов под управлением</span></div>
+  <div class="stat"><b>226 412</b><span>м² жилого фонда</span></div>
+  <div class="stat"><b>40</b><span>сотрудников в компании</span></div>
+  <div class="stat"><b>8 · 6 · 26</b><span>админ / инженеры / рабочие</span></div>
 </div>
 <section class="section">
   <div class="wrap">
-    <h2>Что можно сделать на сайте</h2>
+    <h2>Жителям</h2>
     <div class="grid-3">
       <a class="card" href="vash-dom/"><h3>Ваш дом</h3><p class="muted">Договоры управления, протоколы ОСС и отчёты по каждому адресу.</p></a>
-      <a class="card" href="uslugi/"><h3>Платные услуги</h3><p class="muted">Прейскурант сантехники и электрики — без сюрпризов в счёте.</p></a>
-      <a class="card" href="raskrytie-informacii/"><h3>Раскрытие информации</h3><p class="muted">Тарифы и бухгалтерская отчётность, как требует стандарт раскрытия.</p></a>
+      <a class="card" href="uslugi/"><h3>Платные услуги</h3><p class="muted">Прейскурант сантехники и электрики.</p></a>
+      <a class="card" href="raskrytie-informacii/"><h3>Раскрытие информации</h3><p class="muted">Тарифы и бухгалтерская отчётность.</p></a>
     </div>
   </div>
 </section>
-<section class="section">
+<section class="section alt">
   <div class="wrap grid-2">
     <div>
       <h2>Последние новости</h2>
