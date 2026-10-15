@@ -2,7 +2,7 @@
 {% block title %}Дома{% endblock %}
 {% block content %}
 <div class="head-row">
-  <h1>Дома</h1>
+  <h1>Дома <span class="count">{{ houses|length }}</span></h1>
   <a class="btn" href="/admin/houses/new">+ Новый дом</a>
 </div>
 <table class="table">
