@@ -72,24 +72,30 @@ def chrome(title: str, desc: str, path: str, body: str) -> str:
 <link rel="stylesheet" href="{prefix}assets/style.css">
 </head>
 <body>
-<div class="topbar">
-  <div class="wrap">
-    <span>УК «ЖилВек» · Жуковский</span>
-    <span>
-      <a href="tel:+74998423920">8 499 842-39-20</a> ·
-      <a href="mailto:uk-zhilvek@mail.ru">uk-zhilvek@mail.ru</a> ·
-      круглосуточно ЭДС <a href="tel:+78005503115">8 800 550-31-15</a>
-    </span>
-  </div>
-</div>
 <header class="site-head">
-  <div class="wrap">
-    <a class="logo" href="{prefix}index.html">
-      {logo_html(prefix)}
-      <span><b>УК «ЖилВек»</b><small>управляем домами</small></span>
-    </a>
-    <button class="burger" type="button" aria-label="Меню">Меню</button>
-    <nav class="main">{"".join(nav_html)}</nav>
+  <div class="head-top">
+    <div class="wrap head-brand-row">
+      <a class="logo" href="{prefix}index.html">
+        {logo_html(prefix)}
+        <span><b>УК «ЖилВек»</b><small>управляем домами</small></span>
+      </a>
+      <div class="head-contacts">
+        <div class="hc-item">
+          <a href="tel:+74998423920">8 (499) 842-39-20</a>
+          <a href="mailto:uk-zhilvek@mail.ru">uk-zhilvek@mail.ru</a>
+        </div>
+        <div class="hc-item">
+          <span>Московская обл., г. Жуковский</span>
+          <span>ул. Строительная д. 14 корп. 2</span>
+        </div>
+      </div>
+      <button class="burger" type="button" aria-label="Меню">Меню</button>
+    </div>
+  </div>
+  <div class="nav-bar">
+    <div class="wrap">
+      <nav class="main">{"".join(nav_html)}</nav>
+    </div>
   </div>
 </header>
 {body}
@@ -162,7 +168,7 @@ def build_home(articles: list[dict]) -> str:
       <p class="kicker">ИПУ воды</p>
       <div class="num">15–25</div>
       <p>числа каждого месяца принимаем показания счётчиков воды. Передайте через личный кабинет МосОблЕИРЦ, на почту или лично в офисе УК.</p>
-      <p class="muted">Аварийная служба ЖКХ 24/7: <a href="tel:+78005503115">8 800 550-31-15</a></p>
+      <p class="muted">Аварийная служба ЖКХ 24/7: <a href="tel:+78005503115">8 (800) 550-31-15</a></p>
     </div>
   </div>
 </section>
