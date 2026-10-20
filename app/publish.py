@@ -29,7 +29,7 @@ def depth_of(path: str) -> str:
 
 
 def logo_html(prefix: str) -> str:
-    return f'<img src="{prefix}assets/logo.png" width="48" height="48" alt="УК ЖилВек">'
+    return f'<img src="{prefix}assets/logo.png" width="48" height="48" alt="">'
 
 
 def page_file(path: str) -> Path:
@@ -68,64 +68,57 @@ def chrome(title: str, desc: str, path: str, body: str) -> str:
 <meta name="description" content="{escape(desc)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;650;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{prefix}assets/style.css">
 </head>
 <body>
-<header class="site-head">
-  <div class="head-top">
-    <div class="wrap head-brand-row">
-      <a class="logo" href="{prefix}index.html">
-        {logo_html(prefix)}
-        <span><b>УК «ЖилВек»</b><small>управляем домами</small></span>
-      </a>
-      <div class="head-contacts">
-        <div class="hc-item">
-          <span class="hc-label">Телефон / почта</span>
-          <a class="hc-phone" href="tel:+74998423920">8 (499) 842-39-20</a>
-          <a href="mailto:uk-zhilvek@mail.ru">uk-zhilvek@mail.ru</a>
-        </div>
-        <div class="hc-item">
-          <span class="hc-label">Адрес</span>
-          <span>Московская обл., г. Жуковский</span>
-          <span>ул. Строительная д. 14 корп. 2</span>
-        </div>
-      </div>
-      <button class="burger" type="button" aria-label="Меню">Меню</button>
+<div class="top-bar">
+  <div class="wrap">
+    <span>Московская обл., г. Жуковский, ул. Строительная д. 14 корп. 2</span>
+    <div class="top-bar-contacts">
+      <a href="tel:+74998423920">8 (499) 842-39-20</a>
+      <span class="top-bar-sep">|</span>
+      <a href="mailto:uk-zhilvek@mail.ru">uk-zhilvek@mail.ru</a>
     </div>
   </div>
-  <div class="nav-bar">
-    <div class="wrap">
-      <nav class="main">{"".join(nav_html)}</nav>
-    </div>
+</div>
+<header class="site-head">
+  <div class="wrap header-inner">
+    <a class="logo" href="{prefix}index.html">
+      {logo_html(prefix)}
+      <span><b>УК «ЖилВек»</b><small>управляем домами</small></span>
+    </a>
+    <nav class="main">{"".join(nav_html)}</nav>
+    <button class="burger" type="button" aria-label="Меню">Меню</button>
   </div>
 </header>
 {body}
-<footer>
-  <div class="wrap f-grid">
-    <div>
-      <h4>ООО «УК «ЖилВек»</h4>
-      <p>140185, Московская область, г. Жуковский, ул. Строительная, д. 14, корп. 2, пом. 2</p>
-      <p>ИНН 7703461801 · ОГРН 1187746657295<br>лицензия на управление МКД</p>
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h4>УК «ЖилВек»</h4>
+        <p>Московская обл., г. Жуковский,<br>ул. Строительная д. 14 корп. 2</p>
+        <a href="tel:+74998423920">8 (499) 842-39-20</a>
+        <a href="mailto:uk-zhilvek@mail.ru">uk-zhilvek@mail.ru</a>
+      </div>
+      <div>
+        <h4>Разделы</h4>
+        <a href="{prefix}o-kompanii/">О компании</a>
+        <a href="{prefix}vash-dom/">Ваш дом</a>
+        <a href="{prefix}raskrytie-informacii/">Раскрытие информации</a>
+        <a href="{prefix}kontakty/">Контакты</a>
+      </div>
+      <div>
+        <h4>Жителям</h4>
+        <a href="{prefix}priem-pokazanij-individualnyh-priborov-uchyota-vody/">Передать показания</a>
+        <a href="{prefix}oplata-uslug-zhilishchno-kommunalnogo-hozyajstva/">Оплатить ЖКУ</a>
+        <a href="{prefix}faq/">Задать вопрос</a>
+        <a href="{prefix}privacy-policy/">Политика конфиденциальности</a>
+      </div>
     </div>
-    <div>
-      <h4>Жителям</h4>
-      <a href="{prefix}priem-pokazanij-individualnyh-priborov-uchyota-vody/">Передать показания</a>
-      <a href="{prefix}oplata-uslug-zhilishchno-kommunalnogo-hozyajstva/">Оплатить ЖКУ</a>
-      <a href="{prefix}vash-dom/">Документы дома</a>
-      <a href="{prefix}raskrytie-informacii/">Раскрытие информации</a>
-      <a href="{prefix}faq/">Вопрос-ответ</a>
-    </div>
-    <div>
-      <h4>Компания</h4>
-      <a href="{prefix}o-kompanii/">О компании</a>
-      <a href="{prefix}uslugi/">Платные услуги</a>
-      <a href="{prefix}kontakty/">Контакты</a>
-      <a href="{prefix}rekvizity/">Реквизиты</a>
-      <a href="{prefix}privacy-policy/">Политика конфиденциальности</a>
-    </div>
+    <div class="copyright">© {year} ООО «УК «ЖилВек». Все права защищены.</div>
   </div>
-  <div class="wrap copy">© {year} ООО «Управляющая компания «ЖилВек»</div>
 </footer>
 <script src="{prefix}assets/app.js"></script>
 </body>
@@ -149,68 +142,75 @@ def build_home(articles: list[dict]) -> str:
     news = []
     for a in articles[:6]:
         href = a["slug"].strip("/") + "/"
+        excerpt = escape(a.get("excerpt") or "")
         news.append(
-            f'<a class="news-item" href="{href}"><time>{escape(fmt_date(a["published_at"]))}</time>'
-            f'<div><strong>{escape(a["title"])}</strong><p class="muted">{escape(a.get("excerpt") or "")}</p></div></a>'
+            f'<a class="news-item" href="{href}">'
+            f'<time class="news-date">{escape(fmt_date(a["published_at"]))}</time>'
+            f'<div class="news-content"><h4>{escape(a["title"])}</h4>'
+            f'{"<p>" + excerpt + "</p>" if excerpt else ""}</div></a>'
         )
     body = f"""
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <p class="kicker">Жуковский · 30 домов</p>
+      <span class="badge">Жуковский · 30 домов</span>
       <h1>Приём показаний индивидуальных приборов учёта воды</h1>
-      <p class="lead">ООО «УК «ЖилВек» обслуживает многоквартирные дома в Жуковском: содержание, ремонт, документы и ответы жителям.</p>
+      <p class="hero-desc">ООО «УК «ЖилВек» обслуживает многоквартирные дома в Жуковском: содержание, ремонт, документы и оперативные ответы жителям.</p>
       <div class="actions">
-        <a class="btn btn-s" href="priem-pokazanij-individualnyh-priborov-uchyota-vody/">Передать показания</a>
-        <a class="btn btn-s" href="oplata-uslug-zhilishchno-kommunalnogo-hozyajstva/">Оплатить счёт</a>
-        <a class="btn btn-g" href="kontakty/">Написать в УК</a>
+        <a class="btn btn-primary" href="priem-pokazanij-individualnyh-priborov-uchyota-vody/">Передать показания</a>
+        <a class="btn btn-secondary" href="oplata-uslug-zhilishchno-kommunalnogo-hozyajstva/">Оплатить счёт</a>
+        <a class="btn btn-outline" href="kontakty/">Написать в УК</a>
       </div>
     </div>
     <div class="meter-card">
-      <p class="kicker">ИПУ воды</p>
-      <div class="num">15–25</div>
-      <p>числа каждого месяца принимаем показания счётчиков воды. Передайте через личный кабинет МосОблЕИРЦ, на почту или лично в офисе УК.</p>
-      <p class="muted">Аварийная служба ЖКХ 24/7: <a href="tel:+78005503115">8 (800) 550-31-15</a></p>
-    </div>
-  </div>
-</section>
-<div class="wrap stats">
-  <div class="stat"><b>30</b><span>домов под управлением</span></div>
-  <div class="stat"><b>226 412</b><span>м² жилого фонда</span></div>
-  <div class="stat"><b>40</b><span>сотрудников в компании</span></div>
-  <div class="stat"><b>8 · 6 · 26</b><span>админ / инженеры / рабочие</span></div>
-</div>
-<section class="section">
-  <div class="wrap">
-    <h2>Жителям</h2>
-    <div class="grid-3">
-      <a class="card" href="vash-dom/"><h3>Ваш дом</h3><p class="muted">Договоры управления, протоколы ОСС и отчёты по каждому адресу.</p></a>
-      <a class="card" href="uslugi/"><h3>Платные услуги</h3><p class="muted">Прейскурант сантехники и электрики.</p></a>
-      <a class="card" href="raskrytie-informacii/"><h3>Раскрытие информации</h3><p class="muted">Тарифы и бухгалтерская отчётность.</p></a>
-    </div>
-  </div>
-</section>
-<section class="section alt">
-  <div class="wrap grid-2">
-    <div>
-      <h2>Последние новости</h2>
-      <div class="news-list">{"".join(news)}</div>
-      <p><a href="novosti/">Все новости</a></p>
-    </div>
-    <div>
-      <h2>Обратная связь</h2>
-      <div class="card">
-        <p class="muted">Форма уходит письмом на uk-zhilvek@mail.ru. Для аварии звоните диспетчеру.</p>
-        <form class="form feedback">
-          <input name="name" required placeholder="Ваше имя">
-          <input name="contact" required placeholder="Телефон или email">
-          <textarea name="message" rows="5" placeholder="Обращение"></textarea>
-          <p class="muted">Отправляя форму, вы соглашаетесь с <a href="privacy-policy/">политикой конфиденциальности</a>.</p>
-          <button class="btn btn-p" type="submit">Отправить</button>
-        </form>
-        <p class="ok-msg">Откроется почтовая программа. Если нет — напишите на uk-zhilvek@mail.ru</p>
+      <h3>ИПУ воды</h3>
+      <div class="meter-dates">15 – 25</div>
+      <p>числа каждого месяца принимаем показания счётчиков воды. Передайте через личный кабинет МосОблЕИРЦ, на почту или лично в офисе.</p>
+      <div class="emergency">
+        <div class="emergency-icon">!</div>
+        <div>
+          <div class="emergency-text">Аварийная служба ЖКХ 24/7:</div>
+          <a class="emergency-phone" href="tel:+78005503115">8 (800) 550-31-15</a>
+        </div>
       </div>
     </div>
+  </div>
+</section>
+<section class="stats">
+  <div class="wrap stats-grid">
+    <div><span class="stat-num">30</span><div class="stat-label">домов под управлением</div></div>
+    <div><span class="stat-num">226 412</span><div class="stat-label">м² жилого фонда</div></div>
+    <div><span class="stat-num">40</span><div class="stat-label">сотрудников в компании</div></div>
+    <div><span class="stat-num">8 · 6 · 26</span><div class="stat-label">админ / инженеры / рабочие</div></div>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">
+    <h2 class="section-title">Жителям</h2>
+    <div class="cards-grid">
+      <a class="card" href="vash-dom/">
+        <h3>Ваш дом</h3>
+        <p>Договоры управления, протоколы ОСС и отчёты по каждому адресу. Найдите свой дом в реестре.</p>
+        <span class="card-link">Найти дом →</span>
+      </a>
+      <a class="card" href="uslugi/">
+        <h3>Платные услуги</h3>
+        <p>Прейскурант на работы сантехники и электрика. Оставьте заявку на вызов мастера онлайн.</p>
+        <span class="card-link">Смотреть прайс →</span>
+      </a>
+      <a class="card" href="raskrytie-informacii/">
+        <h3>Раскрытие информации</h3>
+        <p>Тарифы, бухгалтерская отчётность и лицензионные требования в соответствии с законом.</p>
+        <span class="card-link">Открыть документы →</span>
+      </a>
+    </div>
+  </div>
+</section>
+<section class="section section-paper">
+  <div class="wrap">
+    <h2 class="section-title">Последние новости</h2>
+    <div class="news-list">{"".join(news)}</div>
+    <div class="news-more"><a class="btn btn-outline" href="novosti/">Все новости</a></div>
   </div>
 </section>
 """
@@ -251,10 +251,12 @@ def build_houses(houses: list[dict]) -> str:
 def build_news_list(articles: list[dict], prefix: str) -> str:
     rows = []
     for a in articles:
+        excerpt = escape(a.get("excerpt") or "")
         rows.append(
-            f'<a class="card news-item" href="{prefix}{a["slug"].strip("/")}/">'
-            f'<time>{escape(fmt_date(a["published_at"]))}</time>'
-            f'<div><h3>{escape(a["title"])}</h3><p class="muted">{escape(a.get("excerpt") or "")}</p></div></a>'
+            f'<a class="news-item" href="{prefix}{a["slug"].strip("/")}/">'
+            f'<time class="news-date">{escape(fmt_date(a["published_at"]))}</time>'
+            f'<div class="news-content"><h4>{escape(a["title"])}</h4>'
+            f'{"<p>" + excerpt + "</p>" if excerpt else ""}</div></a>'
         )
     return '<div class="news-list">' + "".join(rows) + "</div>"
 
@@ -309,7 +311,7 @@ def publish() -> Path:
     <input name="contact" required placeholder="Телефон или email">
     <textarea name="message" rows="5" placeholder="Обращение"></textarea>
     <p class="muted">Согласие с <a href="../privacy-policy/">политикой конфиденциальности</a></p>
-    <button class="btn btn-p" type="submit">Отправить</button>
+    <button class="btn btn-secondary" type="submit">Отправить</button>
   </form>
   <p class="ok-msg">Откроется почтовая программа.</p>
 </div>
