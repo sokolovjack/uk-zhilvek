@@ -71,8 +71,22 @@ def chrome(title: str, desc: str, path: str, body: str) -> str:
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{prefix}assets/style.css">
 <link rel="icon" href="{prefix}assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="{prefix}assets/favicon-16.png" sizes="16x16">
 <link rel="icon" type="image/png" href="{prefix}assets/favicon-32.png" sizes="32x32">
-<link rel="apple-touch-icon" href="{prefix}assets/favicon-180.png">
+<link rel="icon" type="image/png" href="{prefix}assets/favicon-48.png" sizes="48x48">
+<link rel="apple-touch-icon" href="{prefix}assets/apple-touch-icon.png" sizes="180x180">
+<link rel="apple-touch-icon" href="{prefix}assets/apple-touch-icon-152x152.png" sizes="152x152">
+<link rel="apple-touch-icon" href="{prefix}assets/apple-touch-icon-167x167.png" sizes="167x167">
+<link rel="apple-touch-icon" href="{prefix}assets/apple-touch-icon-180x180.png" sizes="180x180">
+<link rel="manifest" href="{prefix}assets/site.webmanifest">
+<meta name="theme-color" content="#253b80">
+<meta name="msapplication-TileColor" content="#253b80">
+<meta name="msapplication-config" content="{prefix}assets/browserconfig.xml">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ЖилВек">
+<meta name="application-name" content="УК ЖилВек">
+<meta name="mobile-web-app-capable" content="yes">
 </head>
 <body>
 <div class="top-bar">
@@ -273,14 +287,26 @@ def publish() -> Path:
         if src.exists():
             shutil.copy2(src, assets / name)
     theme_assets = THEME / "assets"
-    for name in (
+    asset_names = (
         "logo.png",
         "eds.jpg",
         "favicon.ico",
+        "favicon-16.png",
         "favicon-32.png",
+        "favicon-48.png",
         "favicon-180.png",
         "favicon-192.png",
-    ):
+        "apple-touch-icon.png",
+        "apple-touch-icon-152x152.png",
+        "apple-touch-icon-167x167.png",
+        "apple-touch-icon-180x180.png",
+        "android-chrome-192x192.png",
+        "android-chrome-512x512.png",
+        "mstile-150x150.png",
+        "site.webmanifest",
+        "browserconfig.xml",
+    )
+    for name in asset_names:
         src = theme_assets / name
         if not src.exists() and name == "logo.png":
             src = ROOT / "logo-100.png"

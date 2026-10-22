@@ -1,0 +1,30 @@
+{
+  "name": "УК ЖилВек",
+  "short_name": "ЖилВек",
+  "description": "Управляющая компания «ЖилВек», г. Жуковский",
+  "lang": "ru",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#253b80",
+  "theme_color": "#253b80",
+  "icons": [
+    {
+      "src": "/assets/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
