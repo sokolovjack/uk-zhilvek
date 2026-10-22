@@ -11,3 +11,8 @@ uploads/*
 файлы/**
 !файлы/manifest.json
 !файлы/README.md
+docs/файлы/
+.env
+.env.bak
+ДОСТУПЫ.md
+*.pdf

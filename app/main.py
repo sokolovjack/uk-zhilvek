@@ -38,6 +38,9 @@ app = FastAPI(title="УК ЖилВек CMS")
 app.mount("/admin/static", StaticFiles(directory=str(APP_DIR / "static")), name="admin-static")
 ensure_upload_dir()
 app.mount("/uploads", StaticFiles(directory=str(ROOT / "uploads")), name="uploads")
+_files_dir = ROOT / "файлы"
+if _files_dir.is_dir():
+    app.mount("/файлы", StaticFiles(directory=str(_files_dir)), name="files-archive")
 
 
 @app.on_event("startup")

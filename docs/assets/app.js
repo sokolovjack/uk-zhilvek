@@ -21,9 +21,12 @@
       const contact = form.querySelector("[name=contact]").value.trim();
       const msg = form.querySelector("[name=message]").value.trim();
       const body = encodeURIComponent(`Имя: ${name}\nКонтакт: ${contact}\n\n${msg}`);
-      window.location.href = `mailto:uk-zhilvek@mail.ru?subject=${encodeURIComponent("Обращение с сайта")}&body=${body}`;
+      window.location.href = `mailto:uk-zhilvek@mail.ru?subject=${encodeURIComponent("Обращение с сайта УК ЖилВек")}&body=${body}`;
       const ok = form.parentElement.querySelector(".ok-msg");
-      if (ok) ok.classList.add("show");
+      if (ok) {
+        ok.textContent = "Откройте письмо в почте и нажмите «Отправить» — адрес: uk-zhilvek@mail.ru";
+        ok.classList.add("show");
+      }
       form.reset();
     });
   }

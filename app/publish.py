@@ -8,7 +8,7 @@ from html import escape
 from pathlib import Path
 
 from app.db import ROOT, db, dump_json, list_articles, list_houses, list_pages
-from app.uploads import sync_uploads_to_docs
+from app.uploads import sync_files_archive_to_docs, sync_uploads_to_docs
 
 WEB = ROOT / "docs"
 THEME = ROOT / "theme"
@@ -70,6 +70,9 @@ def chrome(title: str, desc: str, path: str, body: str) -> str:
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{prefix}assets/style.css">
+<link rel="icon" href="{prefix}assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="{prefix}assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="{prefix}assets/favicon-180.png">
 </head>
 <body>
 <div class="top-bar">
@@ -269,13 +272,23 @@ def publish() -> Path:
         src = THEME / name
         if src.exists():
             shutil.copy2(src, assets / name)
-    logo_src = THEME / "assets" / "logo.png"
-    if not logo_src.exists():
-        logo_src = ROOT / "logo-100.png"
-    if logo_src.exists():
-        shutil.copy2(logo_src, assets / "logo.png")
+    theme_assets = THEME / "assets"
+    for name in (
+        "logo.png",
+        "eds.jpg",
+        "favicon.ico",
+        "favicon-32.png",
+        "favicon-180.png",
+        "favicon-192.png",
+    ):
+        src = theme_assets / name
+        if not src.exists() and name == "logo.png":
+            src = ROOT / "logo-100.png"
+        if src.exists():
+            shutil.copy2(src, assets / name)
     (WEB / ".nojekyll").write_text("", encoding="utf-8")
     sync_uploads_to_docs(WEB)
+    sync_files_archive_to_docs(WEB)
 
     with db() as conn:
         pages = {p["slug"]: p for p in list_pages(conn, published_only=True)}
@@ -313,7 +326,7 @@ def publish() -> Path:
     <p class="muted">Согласие с <a href="../privacy-policy/">политикой конфиденциальности</a></p>
     <button class="btn btn-secondary" type="submit">Отправить</button>
   </form>
-  <p class="ok-msg">Откроется почтовая программа.</p>
+    <p class="ok-msg">Обращение уйдёт на uk-zhilvek@mail.ru через почтовую программу.</p>
 </div>
 """
                 inner = f'<div class="prose">{body}</div>' if '<div class="contacts' not in body else body

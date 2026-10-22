@@ -60,13 +60,31 @@ def save_upload(file: UploadFile) -> str:
 
 
 def sync_uploads_to_docs(docs_dir: Path) -> None:
-    """Copy uploaded files into docs/uploads for GitHub Pages."""
+    """Copy uploaded files into docs/uploads for static site."""
     ensure_upload_dir()
     target = docs_dir / "uploads"
     target.mkdir(parents=True, exist_ok=True)
     for src in UPLOAD_DIR.iterdir():
         if src.is_file() and not src.name.startswith("."):
             shutil.copy2(src, target / src.name)
+
+
+def sync_files_archive_to_docs(docs_dir: Path) -> None:
+    """Mirror локальный архив файлов с сайта (договоры, отчёты) в docs/файлы."""
+    src = ROOT / "файлы"
+    if not src.is_dir():
+        return
+    dest = docs_dir / "файлы"
+    if dest.exists() or dest.is_symlink():
+        if dest.is_symlink() or dest.is_file():
+            dest.unlink()
+        else:
+            shutil.rmtree(dest)
+    shutil.copytree(
+        src,
+        dest,
+        ignore=shutil.ignore_patterns("manifest.json", "README.md", "__pycache__"),
+    )
 
 
 def is_upload_file(value) -> bool:
