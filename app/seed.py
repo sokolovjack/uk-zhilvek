@@ -150,15 +150,22 @@ def default_home() -> str:
 
 def seed(force: bool = False) -> None:
     init_db()
-    scraped = json.loads((ROOT / "scraped/site.json").read_text(encoding="utf-8"))
-    titles = json.loads((ROOT / "scraped/news-titles.json").read_text(encoding="utf-8"))
-    pages_map = by_slug(scraped["pages"])
-
     with db() as conn:
         if get_setting(conn, "seeded") == "1" and not force:
             print("CMS already seeded. Use --force to reimport.")
             return
 
+    scraped_path = ROOT / "scraped" / "site.json"
+    titles_path = ROOT / "scraped" / "news-titles.json"
+    if not scraped_path.exists() or not titles_path.exists():
+        raise FileNotFoundError(
+            "Нужны scraped/site.json и scraped/news-titles.json для первичного импорта"
+        )
+    scraped = json.loads(scraped_path.read_text(encoding="utf-8"))
+    titles = json.loads(titles_path.read_text(encoding="utf-8"))
+    pages_map = by_slug(scraped["pages"])
+
+    with db() as conn:
         if force:
             conn.executescript(
                 "DELETE FROM house_docs; DELETE FROM houses; DELETE FROM articles; DELETE FROM pages;"

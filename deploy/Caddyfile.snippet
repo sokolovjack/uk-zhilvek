@@ -1,0 +1,8 @@
+# Блок для /opt/uyut/Caddyfile — сайт УК «ЖилВек»
+# Punycode: ук-жилвек.рф → xn----dtbjckjff1e.xn--p1ai
+
+xn----dtbjckjff1e.xn--p1ai, www.xn----dtbjckjff1e.xn--p1ai {
+	encode gzip
+	# шлюз docker-сети uyut (см. docker inspect uyut-caddy-1)
+	reverse_proxy 172.18.0.1:8081
+}
