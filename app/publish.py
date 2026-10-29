@@ -363,14 +363,22 @@ def publish() -> Path:
 
     for a in articles:
         path = "/" + a["slug"].strip("/") + "/"
+        prefix = depth_of(path)
         body_html = a.get("body_html") or ""
         if not body_html.strip():
-            inner = (
-                f'<p class="muted">{escape(fmt_date(a["published_at"]))}</p>'
-                f'<div class="prose"><p>Текст объявления пока не заполнен. Отредактируйте статью в админке.</p></div>'
-            )
+            prose = '<div class="prose"><p>Текст объявления пока не заполнен. Отредактируйте статью в админке.</p></div>'
         else:
-            inner = f'<p class="muted">{escape(fmt_date(a["published_at"]))}</p><div class="prose">{body_html}</div>'
+            prose = f'<div class="prose">{body_html}</div>'
+        docs = a.get("docs") or []
+        docs_html = ""
+        if docs:
+            links = "".join(
+                f'<a href="{escape(public_doc_url(d["url"], prefix))}" target="_blank" rel="noopener">'
+                f'{escape(d["title"])}<span class="muted">файл</span></a>'
+                for d in docs
+            )
+            docs_html = f'<div class="article-docs"><h3>Файлы</h3><div class="docs">{links}</div></div>'
+        inner = f'<p class="muted">{escape(fmt_date(a["published_at"]))}</p>{prose}{docs_html}'
         write(path, simple_page(path, a["title"], inner, a["title"]))
 
     dump_json()

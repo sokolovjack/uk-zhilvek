@@ -83,6 +83,14 @@ def init_db() -> None:
               url TEXT NOT NULL,
               sort_order INTEGER NOT NULL DEFAULT 0
             );
+
+            CREATE TABLE IF NOT EXISTS article_docs (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              article_id INTEGER NOT NULL REFERENCES articles(id) ON DELETE CASCADE,
+              title TEXT NOT NULL,
+              url TEXT NOT NULL,
+              sort_order INTEGER NOT NULL DEFAULT 0
+            );
             """
         )
 
@@ -154,18 +162,34 @@ def delete_page(conn: sqlite3.Connection, page_id: int) -> None:
 
 # ---- articles ----
 
+def list_article_docs(conn: sqlite3.Connection, article_id: int) -> list[dict]:
+    return [
+        dict(r)
+        for r in conn.execute(
+            "SELECT * FROM article_docs WHERE article_id = ? ORDER BY sort_order, id", (article_id,)
+        ).fetchall()
+    ]
+
+
 def list_articles(conn: sqlite3.Connection, published_only: bool = False) -> list[dict]:
     q = "SELECT * FROM articles"
     if published_only:
         q += " WHERE published = 1"
     q += " ORDER BY published_at DESC, id DESC"
-    return [dict(r) for r in conn.execute(q).fetchall()]
+    articles = [dict(r) for r in conn.execute(q).fetchall()]
+    for a in articles:
+        a["docs"] = list_article_docs(conn, a["id"])
+    return articles
 
 
 def get_article(conn: sqlite3.Connection, article_id: int | None = None, slug: str | None = None) -> dict | None:
     if article_id is not None:
-        return row_to_dict(conn.execute("SELECT * FROM articles WHERE id = ?", (article_id,)).fetchone())
-    return row_to_dict(conn.execute("SELECT * FROM articles WHERE slug = ?", (slug,)).fetchone())
+        a = row_to_dict(conn.execute("SELECT * FROM articles WHERE id = ?", (article_id,)).fetchone())
+    else:
+        a = row_to_dict(conn.execute("SELECT * FROM articles WHERE slug = ?", (slug,)).fetchone())
+    if a:
+        a["docs"] = list_article_docs(conn, a["id"])
+    return a
 
 
 def save_article(conn: sqlite3.Connection, data: dict, article_id: int | None = None) -> int:
@@ -184,13 +208,27 @@ def save_article(conn: sqlite3.Connection, data: dict, article_id: int | None = 
                published_at=:published_at, published=:published, updated_at=:updated_at WHERE id=:id""",
             {**fields, "id": article_id},
         )
-        return article_id
-    cur = conn.execute(
-        """INSERT INTO articles(slug, title, body_html, excerpt, published_at, published, updated_at)
-           VALUES(:slug, :title, :body_html, :excerpt, :published_at, :published, :updated_at)""",
-        fields,
-    )
-    return int(cur.lastrowid)
+        aid = article_id
+    else:
+        cur = conn.execute(
+            """INSERT INTO articles(slug, title, body_html, excerpt, published_at, published, updated_at)
+               VALUES(:slug, :title, :body_html, :excerpt, :published_at, :published, :updated_at)""",
+            fields,
+        )
+        aid = int(cur.lastrowid)
+
+    if "docs" in data:
+        conn.execute("DELETE FROM article_docs WHERE article_id = ?", (aid,))
+        for i, doc in enumerate(data["docs"] or []):
+            title = (doc.get("title") or doc.get("text") or "").strip()
+            url = (doc.get("url") or doc.get("href") or "").strip()
+            if not title or not url:
+                continue
+            conn.execute(
+                "INSERT INTO article_docs(article_id, title, url, sort_order) VALUES(?, ?, ?, ?)",
+                (aid, title, url, i),
+            )
+    return aid
 
 
 def delete_article(conn: sqlite3.Connection, article_id: int) -> None:

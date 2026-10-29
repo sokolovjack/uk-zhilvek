@@ -180,61 +180,58 @@ def article_edit(request: Request, article_id: int):
 
 
 @app.post("/admin/articles/new")
-def article_create(
-    request: Request,
-    title: str = Form(...),
-    slug: str = Form(...),
-    published_at: str = Form(...),
-    excerpt: str = Form(""),
-    body_html: str = Form(""),
-    published: str | None = Form(None),
-):
+async def article_create(request: Request):
     if not current_user(request):
         return RedirectResponse("/admin/login", status_code=303)
+    form = await request.form()
+    try:
+        docs = await _docs_from_form(form)
+    except HTTPException as exc:
+        return flash_redirect("/admin/articles/new", str(exc.detail))
     with db() as conn:
         aid = save_article(
             conn,
             {
-                "title": title,
-                "slug": slug,
-                "published_at": published_at,
-                "excerpt": excerpt,
-                "body_html": body_html,
-                "published": published == "1",
+                "title": str(form.get("title") or ""),
+                "slug": str(form.get("slug") or ""),
+                "published_at": str(form.get("published_at") or ""),
+                "excerpt": str(form.get("excerpt") or ""),
+                "body_html": str(form.get("body_html") or ""),
+                "published": form.get("published") == "1",
+                "docs": docs,
             },
         )
-    return flash_redirect(f"/admin/articles/{aid}", "Статья сохранена")
+    publish()
+    return flash_redirect(f"/admin/articles/{aid}", "Статья сохранена, сайт обновлён")
 
 
 @app.post("/admin/articles/{article_id}")
-def article_update(
-    request: Request,
-    article_id: int,
-    title: str = Form(...),
-    slug: str = Form(...),
-    published_at: str = Form(...),
-    excerpt: str = Form(""),
-    body_html: str = Form(""),
-    published: str | None = Form(None),
-):
+async def article_update(request: Request, article_id: int):
     if not current_user(request):
         return RedirectResponse("/admin/login", status_code=303)
+    form = await request.form()
+    try:
+        docs = await _docs_from_form(form)
+    except HTTPException as exc:
+        return flash_redirect(f"/admin/articles/{article_id}", str(exc.detail))
     with db() as conn:
         if not get_article(conn, article_id=article_id):
             raise HTTPException(404)
         save_article(
             conn,
             {
-                "title": title,
-                "slug": slug,
-                "published_at": published_at,
-                "excerpt": excerpt,
-                "body_html": body_html,
-                "published": published == "1",
+                "title": str(form.get("title") or ""),
+                "slug": str(form.get("slug") or ""),
+                "published_at": str(form.get("published_at") or ""),
+                "excerpt": str(form.get("excerpt") or ""),
+                "body_html": str(form.get("body_html") or ""),
+                "published": form.get("published") == "1",
+                "docs": docs,
             },
             article_id=article_id,
         )
-    return flash_redirect(f"/admin/articles/{article_id}", "Статья сохранена")
+    publish()
+    return flash_redirect(f"/admin/articles/{article_id}", "Статья сохранена, сайт обновлён")
 
 
 @app.post("/admin/articles/{article_id}/delete")
@@ -243,7 +240,8 @@ def article_delete(request: Request, article_id: int):
         return RedirectResponse("/admin/login", status_code=303)
     with db() as conn:
         delete_article(conn, article_id)
-    return flash_redirect("/admin/articles", "Статья удалена")
+    publish()
+    return flash_redirect("/admin/articles", "Статья удалена, сайт обновлён")
 
 
 # -------- houses --------

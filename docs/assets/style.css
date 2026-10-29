@@ -373,6 +373,16 @@ tr:last-child td { border-bottom: 0; }
   font-size: 14px;
 }
 .docs a:hover { background: #e8eef8; color: var(--blue); }
+.article-docs {
+  margin-top: 28px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.article-docs h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+.article-docs .docs { padding: 0; }
 .search {
   width: 100%;
   padding: 12px 14px;
