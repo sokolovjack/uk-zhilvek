@@ -7,7 +7,7 @@
 </div>
 <form method="post" class="stack card" enctype="multipart/form-data">
   <label>Заголовок<input name="title" required value="{{ item.title if item else '' }}"></label>
-  <label>Slug (URL)<input name="slug" required value="{{ item.slug if item else '' }}" placeholder="2026/03/20/novaya-novost"></label>
+  <label>Slug (URL)<input name="slug" value="{{ item.slug if item else '' }}" placeholder="оставьте пустым — сформируется сам"><span class="muted">Необязательно. Если пусто: дата/заголовок, например 2026/10/29/nazvanie-stati</span></label>
   <label>Дата публикации<input name="published_at" type="date" required value="{{ item.published_at if item else today }}"></label>
   <label>Краткое описание<textarea name="excerpt" rows="2">{{ item.excerpt if item else '' }}</textarea></label>
   <label>Текст (HTML)<textarea name="body_html" rows="16">{{ item.body_html if item else '' }}</textarea></label>

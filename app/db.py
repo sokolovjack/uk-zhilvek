@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sqlite3
 from contextlib import contextmanager
 from datetime import datetime, timezone
@@ -9,6 +10,33 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DB_PATH = ROOT / "data" / "cms.db"
+
+
+def slugify_segment(text: str, fallback: str = "novost") -> str:
+    """Make URL segment from title; keep Cyrillic like existing news URLs."""
+    text = (text or "").strip().lower().replace("ё", "е")
+    text = re.sub(r"[\s_]+", "-", text)
+    text = re.sub(r"[^\w\-а-яА-Я]+", "", text, flags=re.UNICODE)
+    text = re.sub(r"-{2,}", "-", text).strip("-._")
+    return (text or fallback)[:80]
+
+
+def make_article_slug(conn: sqlite3.Connection, title: str, published_at: str, article_id: int | None = None) -> str:
+    date_part = (published_at or now()[:10]).strip()[:10]
+    if re.match(r"^\d{4}-\d{2}-\d{2}$", date_part):
+        y, m, d = date_part.split("-")
+        prefix = f"{y}/{m}/{d}"
+    else:
+        prefix = date_part.replace("-", "/")
+    base = f"{prefix}/{slugify_segment(title)}"
+    candidate = base
+    n = 2
+    while True:
+        row = conn.execute("SELECT id FROM articles WHERE slug = ?", (candidate,)).fetchone()
+        if not row or (article_id is not None and row["id"] == article_id):
+            return candidate
+        candidate = f"{base}-{n}"
+        n += 1
 
 
 def now() -> str:
@@ -193,12 +221,17 @@ def get_article(conn: sqlite3.Connection, article_id: int | None = None, slug: s
 
 
 def save_article(conn: sqlite3.Connection, data: dict, article_id: int | None = None) -> int:
+    title = data["title"].strip()
+    published_at = (data.get("published_at") or now()[:10]).strip()[:10]
+    slug = (data.get("slug") or "").strip().strip("/")
+    if not slug:
+        slug = make_article_slug(conn, title, published_at, article_id=article_id)
     fields = {
-        "slug": data["slug"].strip("/"),
-        "title": data["title"].strip(),
+        "slug": slug,
+        "title": title,
         "body_html": data.get("body_html") or "",
         "excerpt": data.get("excerpt") or "",
-        "published_at": data.get("published_at") or now()[:10],
+        "published_at": published_at,
         "published": 1 if data.get("published", True) else 0,
         "updated_at": now(),
     }
