@@ -7,8 +7,7 @@ Type=simple
 User=root
 WorkingDirectory=/opt/zhilvek
 EnvironmentFile=/opt/zhilvek/.env
-# Слушаем только docker-шлюз (не весь интернет). При смене сети: docker inspect uyut-caddy-1
-ExecStart=/opt/zhilvek/.venv/bin/uvicorn app.main:app --host 172.18.0.1 --port 8081 --proxy-headers --forwarded-allow-ips=*
+ExecStart=/opt/zhilvek/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8081 --proxy-headers --forwarded-allow-ips=*
 Restart=always
 RestartSec=3
 
