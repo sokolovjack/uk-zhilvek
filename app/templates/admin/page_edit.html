@@ -11,10 +11,14 @@
   <label>Slug<input name="slug" required value="{{ item.slug }}"></label>
   <label>Description<input name="description" value="{{ item.description }}"></label>
   <label>Порядок<input name="sort_order" type="number" value="{{ item.sort_order }}"></label>
-  <label>Содержимое (HTML)<textarea name="body_html" rows="18">{{ item.body_html }}</textarea></label>
+  <label>Содержимое<span class="muted">Визуальный редактор. Кнопка «&lt;/&gt;» — исходный HTML</span><textarea class="js-wysiwyg" name="body_html" rows="18">{{ item.body_html }}</textarea></label>
   <label class="check"><input type="checkbox" name="published" value="1" {% if item.published %}checked{% endif %}> Опубликована</label>
   <div class="row">
     <button class="btn" type="submit">Сохранить</button>
   </div>
 </form>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="/admin/static/editor.js"></script>
 {% endblock %}

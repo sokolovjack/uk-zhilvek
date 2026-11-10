@@ -5,8 +5,8 @@ from datetime import date
 from pathlib import Path
 from urllib.parse import quote, unquote
 
-from fastapi import FastAPI, Form, HTTPException, Request, Response
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import FastAPI, File, Form, HTTPException, Request, Response, UploadFile
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -411,7 +411,20 @@ def page_update(
             },
             page_id=page_id,
         )
-    return flash_redirect(f"/admin/pages/{page_id}", "Страница сохранена")
+    publish()
+    return flash_redirect(f"/admin/pages/{page_id}", "Страница сохранена, сайт обновлён")
+
+
+@app.post("/admin/upload-image")
+async def admin_upload_image(request: Request, file: UploadFile = File(...)):
+    """Endpoint for TinyMCE image uploads."""
+    if not current_user(request):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    try:
+        url = save_upload(file)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return JSONResponse({"location": url})
 
 
 # -------- publish --------

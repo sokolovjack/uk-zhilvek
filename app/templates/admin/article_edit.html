@@ -10,7 +10,7 @@
   <label>Slug (URL)<input name="slug" value="{{ item.slug if item else '' }}" placeholder="оставьте пустым — сформируется сам"><span class="muted">Необязательно. Если пусто: дата/заголовок, например 2026/10/29/nazvanie-stati</span></label>
   <label>Дата публикации<input name="published_at" type="date" required value="{{ item.published_at if item else today }}"></label>
   <label>Краткое описание (видно в списке статей)<textarea name="excerpt" rows="2">{{ item.excerpt if item else '' }}</textarea></label>
-  <label>Текст (HTML) — виден когда откроешь статью<textarea name="body_html" rows="16">{{ item.body_html if item else '' }}</textarea></label>
+  <label>Текст статьи — виден когда откроешь статью<span class="muted">Визуальный редактор. Кнопка «&lt;/&gt;» — исходный HTML</span><textarea class="js-wysiwyg" name="body_html" rows="16">{{ item.body_html if item else '' }}</textarea></label>
   <label class="check"><input type="checkbox" name="published" value="1" {% if not item or item.published %}checked{% endif %}> Опубликована</label>
 
   <h2>Файлы и вложения</h2>
@@ -62,4 +62,8 @@ function addDoc(){
   wrap.appendChild(row);
 }
 </script>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/tinymce@7.6.1/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="/admin/static/editor.js"></script>
 {% endblock %}

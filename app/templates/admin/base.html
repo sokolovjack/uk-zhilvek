@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Админка{% endblock %} — УК ЖилВек</title>
   <link rel="stylesheet" href="/admin/static/admin.css">
+  {% block head %}{% endblock %}
 </head>
 <body>
 {% if user %}
@@ -27,5 +28,6 @@
   {% if flash %}<div class="flash">{{ flash }}</div>{% endif %}
   {% block content %}{% endblock %}
 </main>
+{% block scripts %}{% endblock %}
 </body>
 </html>
