@@ -415,16 +415,18 @@ def page_update(
     return flash_redirect(f"/admin/pages/{page_id}", "Страница сохранена, сайт обновлён")
 
 
+@app.post("/admin/upload-file")
 @app.post("/admin/upload-image")
-async def admin_upload_image(request: Request, file: UploadFile = File(...)):
-    """Endpoint for TinyMCE image uploads."""
+async def admin_upload_file(request: Request, file: UploadFile = File(...)):
+    """Upload for TinyMCE: images and document attachments."""
     if not current_user(request):
         raise HTTPException(status_code=401, detail="Unauthorized")
     try:
         url = save_upload(file)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    return JSONResponse({"location": url})
+    name = Path(file.filename or url).name
+    return JSONResponse({"location": url, "title": name})
 
 
 # -------- publish --------
